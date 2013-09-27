@@ -15,6 +15,7 @@ use Nooku\Library;
  * Activities Database Table
  *
  * @author  Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
+ * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Nooku\Component\Activities
  */
 class DatabaseTableActivities extends Library\DatabaseTableAbstract
