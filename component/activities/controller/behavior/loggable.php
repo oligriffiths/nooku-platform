@@ -15,6 +15,7 @@ use Nooku\Library;
  * Loggable Controller Behavior
  *
  * @author  Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
+ * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Nooku\Component\Activities
  */
 class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
@@ -33,12 +34,21 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
      */
     protected $_title_column;
 
+    /**
+     * Activity controller identifier.
+     *
+     * @param KObjectConfig
+     */
+    protected $_activity_controller;
+
     public function __construct(Library\ObjectConfig $config)
     {
         parent::__construct($config);
 
-        $this->_actions      = Library\ObjectConfig::unbox($config->actions);
-        $this->_title_column = Library\ObjectConfig::unbox($config->title_column);
+        $this->_actions             = Library\ObjectConfig::unbox($config->actions);
+        $this->_title_column        = Library\ObjectConfig::unbox($config->title_column);
+        $this->_activity_controller = $config->activity_controller;
+
     }
 
     protected function _initialize(Library\ObjectConfig $config)
@@ -47,6 +57,9 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
             'priority'     => Library\Command::PRIORITY_LOWEST,
             'actions'      => array('after.edit', 'after.add', 'after.delete'),
             'title_column' => array('title', 'name'),
+            'activity_controller' => array(
+                'identifier' => 'com:activities.controller.activity',
+                'config'     => array())
         ));
 
         parent::_initialize($config);
@@ -54,64 +67,110 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
 
     public function execute($name, Library\CommandContext $context)
     {
-        if(in_array($name, $this->_actions))
-        {
-            $entity = $context->result;
+        if (in_array($name, $this->_actions)) {
 
-            if($entity instanceof Library\DatabaseRowInterface || $entity instanceof Library\DatabaseRowsetInterface )
-            {
+            $parts = explode('.', $name);
+
+            // Properly fetch data for the event.
+            if ($parts[0] == 'before') {
+                $data = $this->getMixer()->getModel()->getData();
+            } else {
+                $data = $context->result;
+            }
+
+            if ($data instanceof Library\DatabaseRowInterface || $data instanceof Library\DatabaseRowsetInterface) {
                 $rowset = array();
 
-                if ($entity instanceof Library\DatabaseRowInterface) {
-                    $rowset[] = $entity;
+                if ($data instanceof Library\DatabaseRowInterface) {
+                    $rowset[] = $data;
                 } else {
-                    $rowset = $entity;
+                    $rowset = $data;
                 }
 
-                foreach ($rowset as $row)
-                {
+                foreach ($rowset as $row) {
                     //Only log if the row status is valid.
-                    $status = $row->getStatus();
+                    $status = $this->_getStatus($row, $name);
 
-                    if(!empty($status))
-                    {
-                         $identifier = $context->getSubject()->getIdentifier();
-
-                         $log = array(
-                            'action'	  => $context->action,
-            				'package'     => $identifier->package,
-            				'name'        => $identifier->name,
-                    		'status'      => $status,
-                            'created_by'  => $context->user->getId()
-                        );
-
-                        if (is_array($this->_title_column))
-                        {
-                            foreach($this->_title_column as $title)
-                            {
-                                if($row->{$title}){
-                                    $log['title'] = $row->{$title};
-                                    break;
-                                }
-                            }
-                        }
-                        elseif($row->{$this->_title_column}) {
-                            $log['title'] = $row->{$this->_title_column};
-                        }
-
-                        if (!isset($log['title'])) {
-                            $log['title'] = '#'.$row->id;
-                        }
-
-                        $log['row'] = $row->id;
-                        $log['ip']  = $context->request->getAddress();
-
-
-                        $this->getObject('com:activities.database.row.activity', array('data' => $log))->save();
+                    if (!empty($status) && $status !== Library\Database::STATUS_FAILED) {
+                        $this->getObject($this->_activity_controller->identifier,
+                            Library\ObjectConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
+                                $status, $context));
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Activity data getter.
+     *
+     * @param Library\DatabaseRowAbstract $row     The data row.
+     * @param                             string   The row status.
+     * @param Library\CommandContext      $context The command context.
+     *
+     * @return array Activity data.
+     */
+    protected function _getActivityData(Library\DatabaseRowInterface $row, $status, Library\CommandContext $context)
+    {
+
+        $identifier = $this->getActivityIdentifier($context);
+
+        $activity = array(
+            'action'      => $context->action,
+            'application' => $identifier->application,
+            'package'     => $identifier->package,
+            'name'        => $identifier->name,
+            'status'      => $status
+        );
+
+        if (is_array($this->_title_column)) {
+            foreach ($this->_title_column as $title) {
+                if ($row->{$title}) {
+                    $activity['title'] = $row->{$title};
+                    break;
+                }
+            }
+        } elseif ($row->{$this->_title_column}) {
+            $activity['title'] = $row->{$this->_title_column};
+        }
+
+        if (!isset($activity['title'])) {
+            $activity['title'] = '#' . $row->id;
+        }
+
+        $activity['row'] = $row->id;
+
+        return $activity;
+    }
+
+    /**
+     * Status getter.
+     *
+     * @param Library\DatabaseRowInterface $row       The row object.
+     * @param string                       $action    The command action being executed.
+     */
+    protected function _getStatus(Library\DatabaseRowInterface $row, $action)
+    {
+        $status = $row->getStatus();
+
+        // Commands may change the original status of an action.
+        if ($action == 'after.add' && $status == Library\Database::STATUS_UPDATED) {
+            $status = Library\Database::STATUS_CREATED;
+        }
+
+        return $status;
+    }
+
+    /**
+     * Activity identifier getter.
+     *
+     * @param Library\CommandContext $context The command context object.
+     *
+     * @return Library\ObjectIdentifier The activity identifier.
+     */
+    public function getActivityIdentifier(Library\CommandContext $context)
+    {
+        return $context->caller->getIdentifier();
     }
 
     public function getHandle()
