@@ -14,57 +14,31 @@ use Nooku\Library;
 /**
  * Activity Template Helper
  *
- * @author  Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
+ * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Nooku\Component\Activities
  */
 class TemplateHelperActivity extends Library\TemplateHelperDefault implements Library\ObjectInstantiable
 {
-	/**
-     * Check for overrides of the helper
-     *
-     * @param   Library\ObjectConfig         	        $config  An optional Library\ObjectConfig object with configuration options
-     * @param 	Library\ObjectManagerInterface	$manager A Library\ObjectManagerInterface object
-     * @return  TemplateHelperActivity
-     */
     public static function getInstance(Library\ObjectConfig $config, Library\ObjectManagerInterface $manager)
     {
-        $identifier = clone $config->object_identifier;
-        $identifier->package = $config->row->package;
-       
-        $identifier = $manager->getIdentifier($identifier);
-        
-        if(file_exists($identifier->classpath)) {
-            $classname = $identifier->classname;    
-        } else {
+        if (!$manager->isRegistered($config->object_identifier)) {
+            //Create the singleton
             $classname = $config->object_identifier->classname;
+            $instance  = new $classname($config);
+            $manager->setObject($config->object_identifier, $instance);
         }
-        
-        $instance  = new $classname($config);               
-        return $instance;
+
+        return $manager->getObject($config->object_identifier);
     }
-    
+
     public function message($config = array())
-	{
-	    $config = new Library\ObjectConfig($config);
-		$config->append(array(
-			'row'      => ''
-		));
-	
-		$row  = $config->row;
-		$item = $this->getTemplate()->getView()->getRoute('option=com_'.$row->package.'&view='.$row->name.'&id='.$row->row);
-		$user = $this->getTemplate()->getView()->getRoute('option=com_users&view=user&id='.$row->created_by); 
-		
-		$message   = '<a href="'.$user.'">'.$row->created_by_name.'</a> '; 
-		$message  .= $row->status;
-       
-		if ($row->status != 'trashed') {
-			$message .= ' <a href="'.$item.'">'.$row->title.'</a>';
-		} else {
-			$message .= ' <span class="trashed">'.$row->title.'</span>';
-		}
-		
-		$message .= ' '.$row->name; 
-		
-		return $message;
-	}
+    {
+        $config = new Library\ObjectConfig($config);
+
+        $config->append(array(
+            'html' => true
+        ));
+
+        return $config->row->toString($config->html);
+    }
 }
