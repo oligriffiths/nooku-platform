@@ -78,7 +78,7 @@ abstract class DatabaseRowActivityStrategyAbstract extends Library\Object implem
     {
         $config = new Library\ObjectConfig($config);
 
-        $config->append(array('route' => true, 'absolute' => true, 'url' => $this->getObject('request')->getUrl()));
+        $config->append(array('route' => true, 'absolute' => true, 'url' => ''));
 
         $url = $config->url;
 
