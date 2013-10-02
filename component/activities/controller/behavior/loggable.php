@@ -37,7 +37,7 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
     /**
      * Activity controller identifier.
      *
-     * @param KObjectConfig
+     * @var string|Library\ObjectIdentifierInterface
      */
     protected $_activity_controller;
 
