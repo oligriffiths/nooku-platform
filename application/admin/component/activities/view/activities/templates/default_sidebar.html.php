@@ -27,11 +27,12 @@ window.addEvent('domready', function(){
 
 <h3><?=translate( 'Extensions' )?></h3>
 <ul class="navigation">
+    <li>
     <a class="<?= empty($state->package) ? 'active' : ''; ?>" href="<?= route('package=') ?>">
     <?= translate('All extensions')?>
-    </a>
+    </a></li>
     <?php foreach ($packages as $package): ?>
-    <a <?= $package->id == $state->package ? 'class="active"' : '' ?> href="<?=route('package='.$package->id)?>"><?=ucfirst($package->package)?></a>
+    <li><a <?= $package->id == $state->package ? 'class="active"' : '' ?> href="<?=route('package='.$package->id)?>"><?=ucfirst($package->package)?></a></li>
     <?php endforeach ?>
 </ul>
 
