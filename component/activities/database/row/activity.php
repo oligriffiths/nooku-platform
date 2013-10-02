@@ -115,8 +115,15 @@ class DatabaseRowActivity extends Library\DatabaseRowTable implements DatabaseRo
         if (!$this->isNew() && !$this->getModified())
         {
             $identifier       = clone $this->getIdentifier();
-            $identifier->path = array('database', 'row', 'activity', 'strategy');
+            $identifier->path = array('database', 'row', 'activity', 'strategy','package');
             $identifier->name = $this->package;
+
+            // Default fallback.
+            if (!file_exists($identifier->getClassPath()))
+            {
+                $identifier->path = array('database', 'row', 'activity', 'strategy');
+                $identifier->name = 'default';
+            }
 
             $strategy = $this->getObject($identifier, array('row' => $this));
         }
