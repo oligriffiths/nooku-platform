@@ -63,11 +63,11 @@ interface TranslatorParameterInterface
     /**
      * Translator setter.
      *
-     * @param KTranslator $translator The parameter translator.
+     * @param Library\Translator $translator The parameter translator.
      *
      * @return $this.
      */
-    public function setTranslator(KTranslator $translator);
+    public function setTranslator(Library\Translator $translator);
 
     /**
      * Translator getter.
