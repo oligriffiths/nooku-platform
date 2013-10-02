@@ -9,6 +9,7 @@
 
 namespace Nooku\Component\Activities;
 
+use Nooku\Component\Application;
 use Nooku\Library;
 
 /**
@@ -17,15 +18,20 @@ use Nooku\Library;
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Nooku\Component\Activities
  */
-class TranslatorActivity extends TranslatorNooku implements TranslatorInterface
+class TranslatorActivity extends Application\Translator implements TranslatorInterface
 {
-    protected function _initialize(Library\ObjectConfig $config)
+    /**
+     * @see Application\Translator::getCatalogue()
+     */
+    public function getCatalogue()
     {
-        $config->append(array(
-            'alias_catalogue' => 'lib:translator.catalogue',
-            'prefix'          => 'KLS_ACTIVITY_',
-            'catalogue'       => 'com:activities.translator.catalogue.activity'));
-        parent::_initialize($config);
+        if (!$this->_catalogue instanceof Application\TranslatorCatalogueInterface)
+        {
+            // Make use of the application catalogue.
+            $this->setCatalogue($this->getObject('translator')->getCatalogue());
+        }
+
+        return $this->_catalogue;
     }
 
     /**
