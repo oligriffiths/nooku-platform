@@ -40,6 +40,12 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
      * @var string|Library\ObjectIdentifierInterface
      */
     protected $_activity_controller;
+    /**
+     * The application being run.
+     *
+     * @var string
+     */
+    protected $_application;
 
     public function __construct(Library\ObjectConfig $config)
     {
@@ -48,12 +54,14 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
         $this->_actions             = Library\ObjectConfig::unbox($config->actions);
         $this->_title_column        = Library\ObjectConfig::unbox($config->title_column);
         $this->_activity_controller = $config->activity_controller;
+        $this->_application  = $config->application;
 
     }
 
     protected function _initialize(Library\ObjectConfig $config)
     {
         $config->append(array(
+            'application'  => 'admin',
             'priority'     => Library\Command::PRIORITY_LOWEST,
             'actions'      => array('after.edit', 'after.add', 'after.delete'),
             'title_column' => array('title', 'name'),
