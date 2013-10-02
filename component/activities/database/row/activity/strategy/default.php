@@ -199,7 +199,7 @@ class DatabaseRowActivityStrategyDefault extends DatabaseRowActivityStrategyAbst
 
         if ($this->created_by)
         {
-            $url = $this->_getUrl(array('url' => 'index.php?option=com_users&task=user.edit&id=' . $this->created_by));
+            $url = $this->_getUrl(array('url' => '?option=com_users&view=user&id=' . $this->created_by));
         }
 
         return $url;
@@ -214,7 +214,7 @@ class DatabaseRowActivityStrategyDefault extends DatabaseRowActivityStrategyAbst
 
         if ($this->package && $this->name && $this->row)
         {
-            $url = $this->_getUrl(array('url' => 'index.php?option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row));
+            $url = $this->_getUrl(array('url' => '?option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row));
         }
 
         return $url;
