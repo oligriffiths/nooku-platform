@@ -127,7 +127,7 @@ class ModelActivities extends Library\ModelTable
             {
                 $query->where('DATE(tbl.created_on) <= :range_start')->bind(array(
                     'range_start' => $start_date
-                                     ->add(new DateInterval('P' . $day_range . 'D'))
+                                     ->add(new \DateInterval('P' . $day_range . 'D'))
                                      ->format('Y-m-d')));
             }
         }
@@ -142,7 +142,7 @@ class ModelActivities extends Library\ModelTable
             {
                 $query->where('DATE(tbl.created_on) >= :range_end')->bind(array(
                     'range_end' => $end_date
-                                   ->sub(new DateInterval('P' . $day_range . 'D'))
+                                   ->sub(new \DateInterval('P' . $day_range . 'D'))
                                    ->format('Y-m-d')));
             }
         }
