@@ -19,7 +19,7 @@
         <? foreach($activities as $activity) : ?>
         <div class="activity">
             <div class="activity__text">
-                <i class="icon-<?= $activity->action ?>"></i>
+                <i class="<?= $activity->getStrategy()->getIcon() ?>"></i>
                 <?= helper('activity.message', array('row' => $activity)) ?>
             </div>
             <div class="activity__info">
