@@ -245,13 +245,12 @@ class DatabaseRowActivityStrategyDefault extends DatabaseRowActivityStrategyAbst
     {
         $tag = 'tag:' . $this->getObject('request')->getHost();
 
+        $date = new Library\Date(array('date' => $this->created_on));
+
         $data = array(
             'id'        => $tag . ',id:' . $this->uuid,
             'title'     => $this->toString(false),
-            'published' => $this->getObject('lib:template.helper.date')->format(array(
-                'date'   => $this->created_on,
-                'format' => 'c'
-            )),
+            'published' => $date->format('c'),
             'verb'      => $this->action,
             'object'    => array(
                 'id'         => $tag . ',id:' . $this->row,
