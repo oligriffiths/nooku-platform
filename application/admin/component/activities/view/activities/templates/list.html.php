@@ -15,7 +15,7 @@
     <? endforeach; ?>
 
     <? foreach($list as $date => $activities) : ?>
-        <h4><?= helper('date.humanize', array('date' => $date)) ?></h4>
+        <h4><?= ($date == $now) ? translate('Last 24 hours') : helper('date.humanize', array('date' => $date)) ?></h4>
         <? foreach($activities as $activity) : ?>
         <div class="activity">
             <div class="activity__text">
