@@ -102,4 +102,11 @@ interface DatabaseRowActivityStrategyInterface
      * @return string The string representation of the attached activity row object.
      */
     public function toString($html = true);
+
+    /**
+     * Activity icon getter.
+     *
+     * @return string The activity icon class.
+     */
+    public function getIcon();
 }
