@@ -19,12 +19,17 @@ class ActivitiesViewActivitiesHtml extends Library\ViewHtml
 {
 	public function render()
 	{
-        if ($this->getLayout() == 'default')
-		{
-			$model = $this->getObject($this->getModel()->getIdentifier());
-            $this->packages = $model->distinct(true)->column('package')->getRowset();
-		} 
-		
+        switch($this->getLayout()) {
+            case 'default':
+                $model = $this->getObject($this->getModel()->getIdentifier());
+                $this->packages = $model->distinct(true)->column('package')->getRowset();
+                break;
+            case 'list':
+                $date = new Library\Date();
+                $this->now = $date->format('Y-m-d');
+                break;
+        }
+
 		return parent::render();
 	}
 }
