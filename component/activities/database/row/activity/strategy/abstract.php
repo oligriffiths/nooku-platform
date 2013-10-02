@@ -57,13 +57,6 @@ abstract class DatabaseRowActivityStrategyAbstract extends Library\Object implem
     }
 
     /**
-     * Activity icon getter.
-     *
-     * @return string The activity icon class value.
-     */
-    abstract protected function _getIcon();
-
-    /**
      * Activity string getter.
      *
      * An activity string is a compact representation of the activity text which also provides information
