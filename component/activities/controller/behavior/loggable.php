@@ -98,10 +98,15 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
                     //Only log if the row status is valid.
                     $status = $this->_getStatus($row, $name);
 
-                    if (!empty($status) && $status !== Library\Database::STATUS_FAILED) {
-                        $this->getObject($this->_activity_controller->identifier,
-                            Library\ObjectConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
-                                $status, $context));
+                    if (!empty($status) && $status !== Library\Database::STATUS_FAILED)
+                    {
+                        $config = new Library\ObjectConfig(array(
+                            'row'     => $row,
+                            'status'  => $status,
+                            'context' => $context,
+                            'event'   => $name));
+
+                        $this->getObject($this->_controller)->add($this->_getActivityData($config));
                     }
                 }
             }
