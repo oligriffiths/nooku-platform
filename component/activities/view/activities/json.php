@@ -21,6 +21,18 @@ use Nooku\Library;
 class ViewActivitiesJson extends Library\ViewJson
 {
     /**
+     * @var string The layout to use.
+     */
+    protected $_layout;
+
+    public function __construct(Library\ObjectConfig $config)
+    {
+        parent::__construct($config);
+
+        $this->_layout = $config->layout;
+    }
+
+    /**
      * Get the list data
      *
      * @return array The array with data to be encoded to json
@@ -51,7 +63,7 @@ class ViewActivitiesJson extends Library\ViewJson
             'href' => (string)$route->setQuery($state->getValues(), true),
             'url' => array(
                 'type' => 'application/json',
-                'template' => (string)$route->toString(HttpUrl::BASE) . '?{&' . implode(',', $vars) . '}',
+                'template' => (string)$route->toString(Library\HttpUrl::BASE) . '?{&' . implode(',', $vars) . '}',
             ),
             'offset' => (int)$paginator->offset,
             'limit' => (int)$paginator->limit,
@@ -72,7 +84,7 @@ class ViewActivitiesJson extends Library\ViewJson
                 }
             }
 
-            $name = StringInflector::singularize($this->getName());
+            $name = Library\StringInflector::singularize($this->getName());
 
             $items = array();
             foreach ($list as $item)
@@ -85,7 +97,7 @@ class ViewActivitiesJson extends Library\ViewJson
                         'type' => 'application/json',
                         'template' => (string)$this->getRoute('view=' . $name) . '?{&' . implode(',', $vars) . '}',
                     ),
-                    'data' => ($this->getLayout() == 'stream') ? $item->getStreamData() : $item->toArray()
+                    'data' => ($this->_layout == 'stream') ? $item->getStreamData() : $item->toArray()
                 );
             }
 
