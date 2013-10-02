@@ -40,7 +40,7 @@ class UsersControllerSession extends Library\ControllerModel
     {
         $config->append(array(
             'behaviors' => array(
-                'com:activities.controller.behavior.loggable' => array('title_column' => 'name'),
+                'com:users.controller.behavior.loggable_session' => array('title_column' => 'name'),
             )
         ));
 
