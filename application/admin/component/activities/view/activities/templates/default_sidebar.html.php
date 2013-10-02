@@ -15,7 +15,7 @@ window.addEvent('domready', function(){
 	/* Reset the filter values to blank */
 	document.id('activities-filter').addEvent('reset', function(e){
 		e.target.getElements('input').each(function(el){
-			if(['days_back','start_date', 'user'].contains(el.name)){
+			if(['day_range','end_date', 'user'].contains(el.name)){
 				el.value = '';
 			}
 		});
@@ -40,12 +40,12 @@ window.addEvent('domready', function(){
     <fieldset>
         <legend><?=translate( 'Filters' )?></legend>
         <div class="input-prepend">
-            <span class="add-on">Start</span>
-            <input type="date" name="start_date" value="<?= $state->start_date ?>" />
+            <span class="add-on"><?=translate('Show until')?></span>
+            <input type="date" name="end_date" value="<?= $state->end_date ?>" />
         </div>
         <div class="input-prepend">
-            <span class="add-on">Days back</span>
-            <input type="text" name="days_back" value="<?=($state->days_back) ? $state->days_back : '' ?>" />
+            <span class="add-on"><?=translate('Going back')?></span>
+            <input type="text" name="day_range" value="<?=($state->day_range) ? $state->day_range : '' ?>" />
         </div>
         <div class="input-prepend">
             <span class="add-on">User</span>
