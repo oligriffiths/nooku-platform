@@ -86,7 +86,7 @@ class TranslatorParameterDefault extends Library\Object implements TranslatorPar
             'translate'       => false,
             'link_attributes' => array(),
             'attributes'      => array('class' => array('parameter')),
-            'translator'      => 'com:activities.translator',
+            'translator'      => 'com:application.translator',
         ))->append(array(
                 'renderer' => 'com:activities.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
 
@@ -130,7 +130,7 @@ class TranslatorParameterDefault extends Library\Object implements TranslatorPar
     /**
      * @see TranslatorParameterInterface::setTranslator()
      */
-    public function setTranslator(KTranslator $translator)
+    public function setTranslator(Library\Translator $translator)
     {
         $this->_translator = $translator;
         return $this;
@@ -141,7 +141,7 @@ class TranslatorParameterDefault extends Library\Object implements TranslatorPar
      */
     public function getTranslator()
     {
-        if (!$this->_translator instanceof KTranslator)
+        if (!$this->_translator instanceof Library\Translator)
         {
             $this->setTranslator($this->getObject($this->_translator));
         }
