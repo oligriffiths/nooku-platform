@@ -46,7 +46,7 @@ class TranslatorActivity extends Application\Translator implements TranslatorInt
             foreach ($this->_getOverrides($string, $parameters) as $override)
             {
                 // Check if a key for the $override exists.
-                if ($this->isTranslatable($this->getKey($override)))
+                if ($this->isTranslatable($override))
                 {
                     $string = $override;
                     break;
