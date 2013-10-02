@@ -154,8 +154,13 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
         $status = $row->getStatus();
 
         // Commands may change the original status of an action.
-        if ($action == 'after.add' && $status == Library\Database::STATUS_UPDATED) {
+        if ($action == 'after.add' && $status == Library\Database::STATUS_UPDATED)
+        {
             $status = Library\Database::STATUS_CREATED;
+        }
+        elseif ($action == 'after.edit' && $status == Library\Database::STATUS_LOADED)
+        {
+            $status = Library\Database::STATUS_UPDATED;
         }
 
         return $status;
