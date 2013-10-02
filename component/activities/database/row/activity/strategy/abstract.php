@@ -121,7 +121,7 @@ abstract class DatabaseRowActivityStrategyAbstract extends Library\Object implem
         try
         {
             $result = $db->select($query, Library\Database::FETCH_FIELD);
-        } catch (Exception $e)
+        } catch (\RuntimeException $e)
         {
             $result = 0;
         }
