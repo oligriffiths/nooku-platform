@@ -104,43 +104,50 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
     /**
      * Activity data getter.
      *
-     * @param Library\DatabaseRowAbstract $row     The data row.
-     * @param                             string   The row status.
-     * @param Library\CommandContext      $context The command context.
+     * @param Library\ObjectConfig $config Configuration object containing event related information.
      *
      * @return array Activity data.
      */
-    protected function _getActivityData(Library\DatabaseRowInterface $row, $status, Library\CommandContext $context)
+    protected function _getActivityData(Library\ObjectConfig $config)
     {
+        $context = $config->context;
 
-        $identifier = $this->getActivityIdentifier($context);
+        $identifier = $this->getActivityIdentifier($config->context);
 
-        $activity = array(
+        $data = array(
+            'application' => $this->_application,
             'action'      => $context->action,
-            'application' => $identifier->application,
             'package'     => $identifier->package,
             'name'        => $identifier->name,
-            'status'      => $status
+            'status'      => $config->status
         );
 
-        if (is_array($this->_title_column)) {
-            foreach ($this->_title_column as $title) {
-                if ($row->{$title}) {
-                    $activity['title'] = $row->{$title};
+        $row = $config->row;
+
+        if (is_array($this->_title_column))
+        {
+            foreach ($this->_title_column as $title)
+            {
+                if ($row->{$title})
+                {
+                    $data['title'] = $row->{$title};
                     break;
                 }
             }
-        } elseif ($row->{$this->_title_column}) {
-            $activity['title'] = $row->{$this->_title_column};
+        }
+        elseif ($row->{$this->_title_column})
+        {
+            $data['title'] = $row->{$this->_title_column};
         }
 
-        if (!isset($activity['title'])) {
-            $activity['title'] = '#' . $row->id;
+        if (!isset($data['title']))
+        {
+            $data['title'] = '#' . $row->id;
         }
 
-        $activity['row'] = $row->id;
+        $data['row'] = $row->id;
 
-        return $activity;
+        return $data;
     }
 
     /**
