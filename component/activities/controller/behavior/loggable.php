@@ -170,7 +170,7 @@ class ControllerBehaviorLoggable extends Library\ControllerBehaviorAbstract
      */
     public function getActivityIdentifier(Library\CommandContext $context)
     {
-        return $context->caller->getIdentifier();
+        return $context->getSubject()->getIdentifier();
     }
 
     public function getHandle()
