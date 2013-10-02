@@ -28,17 +28,16 @@ class DatabaseRowActivityStrategyDefault extends DatabaseRowActivityStrategyAbst
     }
 
     /**
-     * @see DatabaseRowActivityStrategyAbstract::_getIcon()
+     * @see DatabaseRowActivityStrategyInterface::getIcon()
      */
-    protected function _getIcon()
+    public function getIcon()
     {
         $classes = array(
             'publish'   => 'icon-ok',
             'unpublish' => 'icon-eye-close',
-            'trash'     => 'icon-trash',
             'add'       => 'icon-plus-sign',
             'edit'      => 'icon-edit',
-            'delete'    => 'icon-remove',
+            'delete'    => 'icon-trash',
             'archive'   => 'icon-inbox');
 
         // Default.
@@ -162,11 +161,6 @@ class DatabaseRowActivityStrategyDefault extends DatabaseRowActivityStrategyAbst
         }
 
         $string = $translator->translate($string, $parameters);
-
-        if ($html)
-        {
-            $string = '<i class="' . $this->_getIcon() . '" ></i >&nbsp;' . $string;
-        }
 
         return $string;
     }
