@@ -107,7 +107,7 @@ abstract class DatabaseRowActivityStrategyAbstract extends Library\Object implem
         $config = new Library\ObjectConfig($config);
 
         $config->append(array(
-            'table'  => $this->package . '_' . Library\StringInflector::pluralize($this->name),
+            'table'  => $this->package,
             'column' => $this->package . '_' . $this->name . '_' . 'id',
             'value'  => $this->row));
 
