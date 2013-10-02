@@ -33,13 +33,6 @@ class DatabaseRowActivity extends Library\DatabaseRowTable implements DatabaseRo
             return false;
         }
 
-        if (!in_array($this->type, array('com')))
-        {
-            $this->setStatus(Library\Database::STATUS_FAILED);
-            $this->setStatusMessage('Invalid type value');
-            return false;
-        }
-
         if (!$this->status)
         {
             // Attempt to provide a default status.
