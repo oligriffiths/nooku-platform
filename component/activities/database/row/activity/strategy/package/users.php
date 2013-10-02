@@ -12,12 +12,12 @@ namespace Nooku\Component\Activities;
 use Nooku\Library;
 
 /**
- * Users Activity Database Row Strategy
+ * Users Package Activity Database Row Strategy
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Nooku\Component\Activities
  */
-class DatabaseRowActivityStrategyUsers extends DatabaseRowActivityStrategyDefault
+class DatabaseRowActivityStrategyPackageUsers extends DatabaseRowActivityStrategyDefault
 {
     public function getIcon()
     {

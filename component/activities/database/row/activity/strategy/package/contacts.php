@@ -12,12 +12,12 @@ namespace Nooku\Component\Activities;
 use Nooku\Library;
 
 /**
- * Contacts Activity Database Row Strategy
+ * Contacts Package Activity Database Row Strategy
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Nooku\Component\Activities
  */
-class DatabaseRowActivityStrategyContacts extends DatabaseRowActivityStrategyDefault
+class DatabaseRowActivityStrategyPackageContacts extends DatabaseRowActivityStrategyDefault
 {
     protected function _getString()
     {
