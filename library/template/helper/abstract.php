@@ -1,10 +1,10 @@
 <?php
 /**
- * Nooku Framework - http://www.nooku.org
+ * Nooku Platform - http://www.nooku.org/platform
  *
- * @copyright	Copyright (C) 2007 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @copyright	Copyright (C) 2007 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		git://git.assembla.com/nooku-framework.git for the canonical source repository
+ * @link		http://github.com/nooku/nooku-platform for the canonical source repository
  */
 
 namespace Nooku\Library;
@@ -12,7 +12,7 @@ namespace Nooku\Library;
 /**
  * Abstract Template Helper
  *
- * @author  Johan Janssens <http://nooku.assembla.com/profile/johanjanssens>
+ * @author  Johan Janssens <http://github.com/johanjanssens>
  * @package Nooku\Library\Template
  */
 abstract class TemplateHelperAbstract extends Object implements TemplateHelperInterface
@@ -22,7 +22,7 @@ abstract class TemplateHelperAbstract extends Object implements TemplateHelperIn
 	 *
 	 * @var	TemplateInterface
 	 */
-    protected $_template;
+    private $__template;
 
 	/**
 	 * Constructor
@@ -55,38 +55,13 @@ abstract class TemplateHelperAbstract extends Object implements TemplateHelperIn
     }
 
     /**
-     * Translates a string and handles parameter replacements
-     *
-     * @param string $string String to translate
-     * @param array  $parameters An array of parameters
-     * @return string Translated string
-     */
-    public function translate($string, array $parameters = array())
-    {
-        return $this->getTemplate()->translate($string, $parameters);
-    }
-
-    /**
-     * Escape a string
-     *
-     * By default the function uses htmlspecialchars to escape the string
-     *
-     * @param string $string String to to be escape
-     * @return string Escaped string
-     */
-    public function escape($string)
-    {
-        return $this->getTemplate()->escape($string);
-    }
-
-    /**
      * Set the template object
      *
      * @return  TemplateInterface $template	The template object
      */
     public function setTemplate(TemplateInterface $template)
     {
-        $this->_template = $template;
+        $this->__template = $template;
         return $this;
     }
 
@@ -97,7 +72,7 @@ abstract class TemplateHelperAbstract extends Object implements TemplateHelperIn
      */
     public function getTemplate()
     {
-        return $this->_template;
+        return $this->__template;
     }
 
     /**
@@ -124,7 +99,10 @@ abstract class TemplateHelperAbstract extends Object implements TemplateHelperIn
 
                 if (is_bool($item))
                 {
-                    if ($item === false) continue;
+                    if ($item === false) {
+                        continue;
+                    }
+                    
                     $item = $key;
                 }
 

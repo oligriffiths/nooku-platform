@@ -1,10 +1,10 @@
 <?php
 /**
- * Nooku Framework - http://www.nooku.org
+ * Nooku Platform - http://www.nooku.org/platform
  *
- * @copyright	Copyright (C) 2007 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @copyright	Copyright (C) 2007 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		git://git.assembla.com/nooku-framework.git for the canonical source repository
+ * @link		http://github.com/nooku/nooku-platform for the canonical source repository
  */
 
 namespace Nooku\Library;
@@ -12,17 +12,11 @@ namespace Nooku\Library;
 /**
  * Template Filter Interface
  *
- * @author  Johan Janssens <http://nooku.assembla.com/profile/johanjanssens>
+ * @author  Johan Janssens <http://github.com/johanjanssens>
  * @package Nooku\Library\Template
  */
 interface TemplateFilterInterface extends ObjectHandlable
 {
-    /**
-     * Filter modes
-     */
-    const MODE_COMPILE  = 1;
-    const MODE_RENDER   = 2;
-
     /**
      * Priority levels
      */
@@ -31,26 +25,6 @@ interface TemplateFilterInterface extends ObjectHandlable
     const PRIORITY_NORMAL  = 3;
     const PRIORITY_LOW     = 4;
     const PRIORITY_LOWEST  = 5;
-
-    /**
-     * Translates a string and handles parameter replacements
-     *
-     * @param string $string String to translate
-     * @param array  $parameters An array of parameters
-     *
-     * @return string Translated string
-     */
-    public function translate($string, array $parameters = array());
-
-    /**
-     * Escape a string
-     *
-     * By default the function uses htmlspecialchars to escape the string
-     *
-     * @param string $string String to to be escape
-     * @return string Escaped string
-     */
-    public function escape($string);
 
     /**
      * Get the template object
@@ -72,6 +46,14 @@ interface TemplateFilterInterface extends ObjectHandlable
      * @return  integer The priority level
      */
     public function getPriority();
+
+    /**
+     * Filter the text
+     *
+     * @param string $text  The text to parse
+     * @return void
+     */
+    public function filter(&$text);
 
     /**
      * Method to extract key/value pairs out of a string with xml style attributes

@@ -1,17 +1,17 @@
 <?
 /**
- * Nooku Framework - http://www.nooku.org
+ * Nooku Platform - http://www.nooku.org/platform
  *
- * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		git://git.assembla.com/nooku-framework.git for the canonical source repository
+ * @link		https://github.com/nooku/nooku-platform for the canonical source repository
  */
 ?>
 
-<script src="assets://application/js/jquery.js" />
-<script src="assets://files/js/bootstrap-modal.js" />
-<script src="assets://files/js/bootstrap-image-gallery.js" />
-<script src="assets://files/js/gallery.js" />
+<ktml:script src="assets://application/js/jquery.js" />
+<ktml:script src="assets://files/js/bootstrap-modal.js" />
+<ktml:script src="assets://files/js/bootstrap-image-gallery.js" />
+<ktml:script src="assets://files/js/gallery.js" />
 
 <script>
 jQuery(function($) {
@@ -50,7 +50,7 @@ jQuery(function($) {
     	<? if (!empty($file->thumbnail)): ?>
         <li class="span3">
     		<a class="thumbnail text-center" data-path="<?= escape($file->path); ?>"
-    			href="<?= route('&view=file&folder='.$state->folder.'&name='.$file->name) ?>"
+    			href="<?= route('&view=file&folder='.state()->folder.'&name='.$file->name) ?>"
     		    title="<?= escape($file->display_name) ?>"
     		    style="min-height:<?= $thumbnail_size['y'] ?>px"
             >
@@ -61,11 +61,10 @@ jQuery(function($) {
         <? endforeach ?>
     </ol>
 
-    <? if(count($files) != $total): ?>
+    <? if(count($files) != count(state())): ?>
 	    <?= helper('paginator.pagination', array(
-	    	'total' => $total,
-	    	'limit' => $state->limit,
-	    	'offset' => $state->offset,
+	    	'limit' => state()->limit,
+	    	'offset' => state()->offset,
 	    	'show_count' => false,
 	    	'show_limit' => false
 	    )) ?>

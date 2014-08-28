@@ -1,10 +1,10 @@
 <?php
 /**
- * Nooku Framework - http://www.nooku.org
+ * Nooku Platform - http://www.nooku.org/platform
  *
- * @copyright	Copyright (C) 2007 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @copyright	Copyright (C) 2007 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		git://git.assembla.com/nooku-framework.git for the canonical source repository
+ * @link		https://github.com/nooku/nooku-platform for the canonical source repository
  */
 
 namespace Nooku\Library;
@@ -18,7 +18,7 @@ namespace Nooku\Library;
  * string it will be filtered to NULL. Values will only be set if the state exists. To insert new states use the
  * the insert() function.
  *
- * @author  Johan Janssens <http://nooku.assembla.com/profile/johanjanssens>
+ * @author  Johan Janssens <http://github.com/johanjanssens>
  * @package Nooku\Library\Model
  */
 class ModelState extends ObjectArray implements ModelStateInterface
@@ -187,6 +187,17 @@ class ModelState extends ObjectArray implements ModelStateInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Get the total number of entities
+     *
+     * @return  int
+     */
+    public function count()
+    {
+        //Reset the model
+        return $this->_model->count();
     }
 
     /**
