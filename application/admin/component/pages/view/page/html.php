@@ -54,6 +54,11 @@ class PagesViewPageHtml extends Library\ViewHtml
         $context->data->parent_id = $page->getParentId();
 
         parent::_fetchData($context);
+
+        //Extract type information from model state
+        if(is_string($context->parameters->type)){
+            $context->parameters->type = $this->getModel()->getState()->type;
+        }
     }
 
     protected function _loadTranslations(Library\ViewContext $context)
