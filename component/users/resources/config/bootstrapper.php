@@ -16,7 +16,7 @@ return array(
     'identifiers' => array(
 
         'dispatcher' => array(
-            'authenticators' => array('com:users.dispatcher.authenticator.cookie'),
+            'authenticators' => array('com:users.dispatcher.authenticator.cookie','com:users.dispatcher.authenticator.basic'),
         ),
 
         'user.session' => array(
