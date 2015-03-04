@@ -489,6 +489,26 @@ class DispatcherRequestAbstract extends ControllerRequest implements DispatcherR
     }
 
     /**
+     * Get the request username from the request headers
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->getHeaders()->get('php-auth-user');
+    }
+
+    /**
+     * Get the request password from the request headers
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->getHeaders()->get('php-auth-pw');
+    }
+
+    /**
      * Return the Url of the request regardless of the server
      *
      * @return  HttpUrl A HttpUrl object
