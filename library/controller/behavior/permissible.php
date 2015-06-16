@@ -73,7 +73,7 @@ class ControllerBehaviorPermissible extends ControllerBehaviorAbstract
         {
             $action = $parts[1];
 
-            if($this->canExecute($action) === false)
+            if($this->canExecute($action, $command) === false)
             {
                 $message = 'Action '.ucfirst($action).' Not Allowed';
 
@@ -98,9 +98,10 @@ class ControllerBehaviorPermissible extends ControllerBehaviorAbstract
      * Check if an action can be executed
      *
      * @param   string  $action Action name
+     * @param   CommandInterface $command The command for the action
      * @return  boolean True if the action can be executed, otherwise FALSE.
      */
-    public function canExecute($action)
+    public function canExecute($action, CommandInterface $command)
     {
         //Check if the action is allowed
         $method = 'can'.ucfirst($action);
@@ -113,7 +114,7 @@ class ControllerBehaviorPermissible extends ControllerBehaviorAbstract
 
             $result = isset($actions[$action]);
         }
-        else $result = $this->$method();
+        else $result = $this->$method($command);
 
         return $result;
     }
